@@ -1,0 +1,26 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/toast_background"
+    android:padding="16dp"
+    android:orientation="horizontal"
+    android:gravity="center">
+
+    <!-- Use the error.png icon for the ImageView -->
+    <ImageView
+        android:id="@+id/errorIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/error"
+    android:contentDescription="Error Icon"
+    android:layout_marginEnd="8dp" />
+
+    <TextView
+        android:id="@+id/errorMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Error message"
+        android:textColor="#FF0000"
+    android:textSize="16sp"
+    android:fontFamily="sans-serif-medium" />
+</LinearLayout>

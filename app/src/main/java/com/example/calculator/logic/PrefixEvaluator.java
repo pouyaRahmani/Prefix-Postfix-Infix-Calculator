@@ -1,10 +1,10 @@
 package com.example.calculator.logic;
 
 import java.util.Stack;
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class PrefixEvaluator extends Expression {
+public class PrefixEvaluator extends BaseExpressionEvaluator {
 
     @Override
     public double evaluate(String expression) throws IllegalArgumentException {
@@ -19,8 +19,7 @@ public class PrefixEvaluator extends Expression {
 
         while (!tokens.isEmpty()) {
             String token = tokens.pop();
-
-            if (token.matches("-?\\d+(?:\\.\\d+)?")) {
+            if (isNumeric(token)) {
                 stack.push(Double.parseDouble(token));
             } else if (isOperator(token)) {
                 double val1 = stack.pop();
@@ -32,21 +31,5 @@ public class PrefixEvaluator extends Expression {
         }
 
         return stack.pop();
-    }
-
-    private boolean isOperator(String token) {
-        return "+-*/".contains(token);
-    }
-
-    private double applyOp(String op, double a, double b) {
-        switch (op) {
-            case "+": return a + b;
-            case "-": return a - b;
-            case "*": return a * b;
-            case "/":
-                if (b == 0) throw new IllegalArgumentException("Cannot divide by zero");
-                return a / b;
-            default: throw new IllegalArgumentException("Invalid operator: " + op);
-        }
     }
 }

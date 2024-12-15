@@ -4,65 +4,51 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class InfixEvaluator extends Expression {
+public class InfixEvaluator extends BaseExpressionEvaluator {
 
     @Override
     public double evaluate(String expression) throws IllegalArgumentException {
         Stack<Double> values = new Stack<>();
-        Stack<Character> ops = new Stack<>();
-
+        Stack<Character> operators = new Stack<>();
         Pattern tokenPattern = Pattern.compile("\\s*(-?\\d+(?:\\.\\d+)?|[-+*/()]|\\S)\\s*");
         Matcher matcher = tokenPattern.matcher(expression);
 
         while (matcher.find()) {
             String token = matcher.group().trim();
-
-            if (token.matches("-?\\d+(?:\\.\\d+)?")) {
+            if (isNumeric(token)) {
                 values.push(Double.parseDouble(token));
             } else if (token.equals("(")) {
-                ops.push('(');
+                operators.push('(');
             } else if (token.equals(")")) {
-                while (!ops.isEmpty() && ops.peek() != '(') {
+                while (!operators.isEmpty() && operators.peek() != '(') {
                     double secondOperand = values.pop();
                     double firstOperand = values.pop();
-                    values.push(applyOp(ops.pop(), secondOperand, firstOperand));
+                    values.push(applyOp(String.valueOf(operators.pop()), firstOperand, secondOperand));
                 }
-                ops.pop();
-            } else if (token.matches("[-+*/]")) {
+                operators.pop();
+            } else if (isOperator(token)) {
                 char op = token.charAt(0);
-                while (!ops.isEmpty() && precedence(op) <= precedence(ops.peek())) {
+                while (!operators.isEmpty() && precedence(op) <= precedence(operators.peek())) {
                     double secondOperand = values.pop();
                     double firstOperand = values.pop();
-                    values.push(applyOp(ops.pop(), secondOperand, firstOperand));
+                    values.push(applyOp(String.valueOf(operators.pop()), firstOperand, secondOperand));
                 }
-                ops.push(op);
+                operators.push(op);
             } else {
                 throw new IllegalArgumentException("Invalid token: " + token);
             }
         }
 
-        while (!ops.isEmpty()) {
+        while (!operators.isEmpty()) {
             double secondOperand = values.pop();
             double firstOperand = values.pop();
-            values.push(applyOp(ops.pop(), secondOperand, firstOperand));
+            values.push(applyOp(String.valueOf(operators.pop()), firstOperand, secondOperand));
         }
 
         return values.pop();
     }
 
-    private int precedence(char op) {
-        return (op == '+' || op == '-') ? 1 : (op == '*' || op == '/') ? 2 : 0;
-    }
-
-    private double applyOp(char op, double b, double a) {
-        switch (op) {
-            case '+': return a + b;
-            case '-': return a - b;
-            case '*': return a * b;
-            case '/':
-                if (b == 0) throw new IllegalArgumentException("Cannot divide by zero");
-                return a / b;
-            default: throw new IllegalArgumentException("Invalid operator: " + op);
-        }
+    private int precedence(char operator) {
+        return (operator == '+' || operator == '-') ? 1 : (operator == '*' || operator == '/') ? 2 : 0;
     }
 }
