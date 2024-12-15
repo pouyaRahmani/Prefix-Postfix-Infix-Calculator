@@ -3,6 +3,7 @@ package com.example.calculator;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.*;
+
 import com.example.calculator.logic.ExpressionHandler;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,24 +30,10 @@ public class MainActivity extends AppCompatActivity {
         calculateButton.setOnClickListener(view -> {
             String expression = inputExpression.getText().toString().trim();
             String selectedFormat = formatSpinner.getSelectedItem().toString();
-            ExpressionHandler handler = new ExpressionHandler();
 
             try {
-                String result;
-                switch (selectedFormat) {
-                    case "Infix":
-                        result = handler.evaluateInfix(expression);
-                        break;
-                    case "Postfix":
-                        result = handler.evaluatePostfix(expression);
-                        break;
-                    case "Prefix":
-                        result = handler.evaluatePrefix(expression);
-                        break;
-                    default:
-                        result = "Unknown format!";
-                }
-                resultView.setText(result);
+                double result = ExpressionHandler.evaluate(expression, selectedFormat);
+                resultView.setText(String.valueOf(result));
             } catch (Exception e) {
                 resultView.setText("Error: " + e.getMessage());
             }
