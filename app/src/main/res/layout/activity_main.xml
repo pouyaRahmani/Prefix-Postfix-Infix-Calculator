@@ -5,7 +5,7 @@
     android:background="@drawable/background_gradient"
     android:padding="20dp">
 
-    <!-- Title Text -->
+    <!-- عنوان -->
     <TextView
         android:id="@+id/titleText"
         android:layout_width="wrap_content"
@@ -17,10 +17,7 @@
         android:textColor="#FFFFFF"
         android:fontFamily="sans-serif-medium" />
 
-    <!-- Result TextView -->
-
-    <!-- TextInputLayout for Expression -->
-
+    <!-- نمایش نتیجه -->
     <TextView
         android:id="@+id/resultView"
         android:layout_width="match_parent"
@@ -34,13 +31,28 @@
         android:textColor="#FFFFFF"
         android:textSize="24sp" />
 
+    <!-- نمایش عبارت Infix -->
+    <TextView
+        android:id="@+id/conversionResultView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/resultView"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/result_background"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="Infix result will be displayed here"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp" />
+
+    <!-- ورودی عبارت -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/inputContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/resultView"
+        android:layout_below="@id/conversionResultView"
         android:layout_centerInParent="true"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="64dp"
         app:boxBackgroundMode="filled"
         app:boxCornerRadiusTopStart="8dp"
         app:boxCornerRadiusTopEnd="8dp"
@@ -59,18 +71,18 @@
             android:textColorHint="@android:color/darker_gray" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Spinner -->
+    <!-- اسپینر -->
     <Spinner
         android:id="@+id/formatSpinner"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_below="@id/inputContainer"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/spinner_background"
         android:padding="10dp" />
 
-    <!-- Calculate Button -->
+    <!-- دکمه محاسبه -->
     <Button
         android:id="@+id/calculateButton"
         android:layout_width="match_parent"
