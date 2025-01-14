@@ -12,6 +12,7 @@ import com.example.calculator.convert.InfixWithParenthesesConverter;
 import com.example.calculator.convert.PostfixToInfixConverter;
 import com.example.calculator.convert.PrefixToInfixConverter;
 import com.example.calculator.logic.ExpressionHandler;
+import com.example.calculator.logic.InputValidator;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,18 +27,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         inputExpression = findViewById(R.id.inputExpression);
         formatSpinner = findViewById(R.id.formatSpinner);
         calculateButton = findViewById(R.id.calculateButton);
         resultView = findViewById(R.id.resultView);
         conversionResultView = findViewById(R.id.conversionResultView);
 
-
         String[] formats = {"Infix", "Postfix", "Prefix"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, formats);
         formatSpinner.setAdapter(adapter);
-
 
         calculateButton.setOnClickListener(view -> {
             String expression = inputExpression.getText().toString().trim();
@@ -49,16 +47,21 @@ public class MainActivity extends AppCompatActivity {
             }
 
             try {
+                // Validate the expression
+                if (!validateExpression(expression, selectedFormat)) {
+                    throw new IllegalArgumentException("Expression format is invalid for the selected type: " + selectedFormat);
+                }
 
+                // Convert to Infix
                 String infixExpression = convertToInfix(expression, selectedFormat);
 
-
+                // Display converted infix expression
                 conversionResultView.setText("Infix: " + infixExpression);
 
-
+                // Evaluate the infix expression
                 double result = ExpressionHandler.evaluate(infixExpression, "Infix");
 
-
+                // Display result
                 resultView.setText("Result: " + result);
                 Toast.makeText(this, "Calculation successful!", Toast.LENGTH_SHORT).show();
             } catch (IllegalArgumentException e) {
@@ -73,7 +76,25 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Validates the user input expression based on the selected format.
+     */
+    private boolean validateExpression(String expression, String format) {
+        switch (format) {
+            case "Infix":
+                return InputValidator.isValidInfix(expression);
+            case "Postfix":
+                return InputValidator.isValidPostfix(expression);
+            case "Prefix":
+                return InputValidator.isValidPrefix(expression);
+            default:
+                return false;
+        }
+    }
 
+    /**
+     * Converts the given expression to infix format based on the selected format.
+     */
     private String convertToInfix(String expression, String format) throws IllegalArgumentException {
         switch (format) {
             case "Prefix":
@@ -87,7 +108,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Displays a custom error toast with the given message.
+     */
     private void showErrorToast(String message) {
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.toast_error, null);

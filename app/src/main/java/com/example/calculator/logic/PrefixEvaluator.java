@@ -9,7 +9,7 @@ public class PrefixEvaluator extends BaseExpressionEvaluator {
     @Override
     public double evaluate(String expression) throws IllegalArgumentException {
         Stack<Double> stack = new Stack<>();
-        Pattern tokenPattern = Pattern.compile("-?\\d+(?:\\.\\d+)?|[-+*/]");
+        Pattern tokenPattern = Pattern.compile("-?\\d+(\\.\\d+)?|[-+*/]");
         Matcher matcher = tokenPattern.matcher(expression);
 
         Stack<String> tokens = new Stack<>();

@@ -9,7 +9,7 @@ public class PostfixEvaluator extends BaseExpressionEvaluator {
     @Override
     public double evaluate(String expression) throws IllegalArgumentException {
         Stack<Double> stack = new Stack<>();
-        Pattern tokenPattern = Pattern.compile("\\s*(-?\\d+(?:\\.\\d+)?|[-+*/])\\s*");
+        Pattern tokenPattern = Pattern.compile("\\s*(-?\\d+(\\.\\d+)?|[-+*/])\\s*");
         Matcher matcher = tokenPattern.matcher(expression);
 
         while (matcher.find()) {

@@ -10,7 +10,7 @@ public class InfixEvaluator extends BaseExpressionEvaluator {
     public double evaluate(String expression) throws IllegalArgumentException {
         Stack<Double> values = new Stack<>();
         Stack<Character> operators = new Stack<>();
-        Pattern tokenPattern = Pattern.compile("\\s*(-?\\d+(?:\\.\\d+)?|[-+*/()]|\\S)\\s*");
+        Pattern tokenPattern = Pattern.compile("\\s*(-?\\d+(\\.\\d+)?|[-+*/()]|\\S)\\s*");
         Matcher matcher = tokenPattern.matcher(expression);
 
         while (matcher.find()) {
@@ -21,17 +21,17 @@ public class InfixEvaluator extends BaseExpressionEvaluator {
                 operators.push('(');
             } else if (token.equals(")")) {
                 while (!operators.isEmpty() && operators.peek() != '(') {
-                    double secondOperand = values.pop();
-                    double firstOperand = values.pop();
-                    values.push(applyOp(String.valueOf(operators.pop()), firstOperand, secondOperand));
+                    double b = values.pop();
+                    double a = values.pop();
+                    values.push(applyOp(String.valueOf(operators.pop()), a, b));
                 }
                 operators.pop();
             } else if (isOperator(token)) {
                 char op = token.charAt(0);
                 while (!operators.isEmpty() && precedence(op) <= precedence(operators.peek())) {
-                    double secondOperand = values.pop();
-                    double firstOperand = values.pop();
-                    values.push(applyOp(String.valueOf(operators.pop()), firstOperand, secondOperand));
+                    double b = values.pop();
+                    double a = values.pop();
+                    values.push(applyOp(String.valueOf(operators.pop()), a, b));
                 }
                 operators.push(op);
             } else {
@@ -40,9 +40,9 @@ public class InfixEvaluator extends BaseExpressionEvaluator {
         }
 
         while (!operators.isEmpty()) {
-            double secondOperand = values.pop();
-            double firstOperand = values.pop();
-            values.push(applyOp(String.valueOf(operators.pop()), firstOperand, secondOperand));
+            double b = values.pop();
+            double a = values.pop();
+            values.push(applyOp(String.valueOf(operators.pop()), a, b));
         }
 
         return values.pop();

@@ -2,7 +2,7 @@ package com.example.calculator.logic;
 
 public abstract class BaseExpressionEvaluator implements Expression {
     protected boolean isNumeric(String token) {
-        return token.matches("-?\\d+(?:\\.\\d+)?");
+        return token.matches("-?\\d+(\\.\\d+)?");
     }
 
     protected boolean isOperator(String token) {
