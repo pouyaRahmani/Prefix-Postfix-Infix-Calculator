@@ -1,10 +1,13 @@
 package com.example.calculator.logic;
 
+// Handles the evaluation of expressions in different formats
 public class ExpressionHandler {
 
+    // Evaluates the given expression in the specified format (infix, prefix, or postfix)
     public static double evaluate(String expression, String format) throws IllegalArgumentException {
         boolean isValid;
 
+        // Validate the expression format
         switch (format.toLowerCase()) {
             case "infix":
                 isValid = InputValidator.isValidInfix(expression);
@@ -23,6 +26,7 @@ public class ExpressionHandler {
             throw new IllegalArgumentException("Invalid expression format for " + format);
         }
 
+        // Create the appropriate evaluator based on the format
         Expression evaluator;
 
         switch (format.toLowerCase()) {
@@ -39,6 +43,7 @@ public class ExpressionHandler {
                 throw new IllegalArgumentException("Invalid format: " + format);
         }
 
+        // Evaluate the expression
         return evaluator.evaluate(expression);
     }
 }

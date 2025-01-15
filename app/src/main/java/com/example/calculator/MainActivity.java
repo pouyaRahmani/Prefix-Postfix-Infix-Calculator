@@ -14,29 +14,33 @@ import com.example.calculator.convert.PrefixToInfixConverter;
 import com.example.calculator.logic.ExpressionHandler;
 import com.example.calculator.logic.InputValidator;
 
+// Main activity for the calculator application
 public class MainActivity extends AppCompatActivity {
 
-    private EditText inputExpression;
-    private Spinner formatSpinner;
-    private Button calculateButton;
-    private TextView resultView;
-    private TextView conversionResultView; // For displaying infix conversion results
+    private EditText inputExpression; // Input field for the expression
+    private Spinner formatSpinner; // Dropdown menu for selecting the format
+    private Button calculateButton; // Button to calculate the result
+    private TextView resultView; // TextView to display the result
+    private TextView conversionResultView; // TextView to display the converted expression
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Initialize UI components
         inputExpression = findViewById(R.id.inputExpression);
         formatSpinner = findViewById(R.id.formatSpinner);
         calculateButton = findViewById(R.id.calculateButton);
         resultView = findViewById(R.id.resultView);
         conversionResultView = findViewById(R.id.conversionResultView);
 
+        // Set up the format dropdown menu
         String[] formats = {"Infix", "Postfix", "Prefix"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, formats);
         formatSpinner.setAdapter(adapter);
 
+        // Set up the calculate button click event
         calculateButton.setOnClickListener(view -> {
             String expression = inputExpression.getText().toString().trim();
             String selectedFormat = formatSpinner.getSelectedItem().toString();
@@ -76,9 +80,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Validates the user input expression based on the selected format.
-     */
+    // Validates the user input expression based on the selected format
     private boolean validateExpression(String expression, String format) {
         switch (format) {
             case "Infix":
@@ -92,9 +94,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Converts the given expression to infix format based on the selected format.
-     */
+    // Converts the given expression to infix format based on the selected format
     private String convertToInfix(String expression, String format) throws IllegalArgumentException {
         switch (format) {
             case "Prefix":
@@ -108,9 +108,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Displays a custom error toast with the given message.
-     */
+    // Displays a custom error toast with the given message
     private void showErrorToast(String message) {
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.toast_error, null);
